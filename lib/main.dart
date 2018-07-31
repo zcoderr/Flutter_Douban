@@ -1,6 +1,6 @@
 import 'package:doubanmovie_flutter/pages/explore_page.dart';
 import 'package:doubanmovie_flutter/pages/hotlist_page.dart';
-import 'package:doubanmovie_flutter/pages/upcoming_page.dart';
+import 'package:doubanmovie_flutter/pages/more_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +20,7 @@ class ClientState extends State<DoubanMovieClient> {
 
   var tabImages;
   var _body;
-  var appBarTitles = ['首页', '即将上映', '发现', '我的'];
+  var appBarTitles = ['首页', '发现', '更多'];
 
   Image getTabImage(path) {
     return new Image.asset(path, width: 20.0, height: 20.0);
@@ -34,24 +34,20 @@ class ClientState extends State<DoubanMovieClient> {
           getTabImage('images/icon_hot_selected.png')
         ],
         [
-          getTabImage('images/icon_upcoming_normal.png'),
-          getTabImage('images/icon_upcoming_selected.png')
-        ],
-        [
           getTabImage('images/icon_explore_normal.png'),
           getTabImage('images/icon_explore_selected.png')
         ],
         [
-          getTabImage('images/icon_account_normal.png'),
-          getTabImage('images/icon_account_selected.png')
+          getTabImage('images/icon_more_normal.png'),
+          getTabImage('images/icon_more_selected.png')
         ]
       ];
     }
     _body = new IndexedStack(
       children: <Widget>[
         new HotListPage(),
-        new UpComningPage(),
         new ExplorePage(),
+        new MorePage(),
         new HotListPage()
       ],
       index: _tabIndex,

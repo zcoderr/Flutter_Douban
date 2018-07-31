@@ -44,7 +44,7 @@ class HotListState extends State<HotList> {
         child: new AspectRatio(
           aspectRatio: 28.0 / 37.0,
           child: new Card(
-            elevation: 5.0,
+            elevation: 7.0,
             shape: new RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(10.0),
@@ -83,6 +83,7 @@ class HotListState extends State<HotList> {
                           '评分:${datas[pos].rating.average}',
                           style: new TextStyle(
                             color: Colors.white,
+                            fontWeight: FontWeight.bold,
                             fontSize: 14.0,
                           ),
                         ),
@@ -91,7 +92,7 @@ class HotListState extends State<HotList> {
                           style: new TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 28.0,
+                              fontSize: 30.0,
                               decorationColor: Colors.red),
                         ),
                       ],
@@ -208,6 +209,7 @@ class HotListTitle extends StatelessWidget {
               '7月20日 星期五',
               style: new TextStyle(
                 color: Colors.grey,
+                fontWeight: FontWeight.bold,
                 fontSize: 15.0,
               ),
             ),
@@ -221,7 +223,7 @@ class HotListTitle extends StatelessWidget {
               'Today',
               style: new TextStyle(
                   color: Colors.black,
-                  fontSize: 34.0,
+                  fontSize: 36.0,
                   fontWeight: FontWeight.bold),
             ),
             padding: new EdgeInsets.only(left: 15.0, bottom: 13.0),
