@@ -200,36 +200,13 @@ class HotListState extends State<HotList> {
 class HotListTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Column(
-      children: <Widget>[
-        new Align(
-          alignment: new FractionalOffset(0.0, 0.0),
-          child: new Container(
-            child: new Text(
-              '7月20日 星期五',
-              style: new TextStyle(
-                color: Colors.grey,
-                fontWeight: FontWeight.bold,
-                fontSize: 15.0,
-              ),
-            ),
-            padding: new EdgeInsets.only(left: 15.0, top: 30.0, bottom: 5.0),
-          ),
-        ),
-        new Align(
-          alignment: new FractionalOffset(0.0, 0.0),
-          child: new Container(
-            child: new Text(
-              'Today',
-              style: new TextStyle(
-                  color: Colors.black,
-                  fontSize: 36.0,
-                  fontWeight: FontWeight.bold),
-            ),
-            padding: new EdgeInsets.only(left: 15.0, bottom: 13.0),
-          ),
-        ),
-      ],
+    return new Container(
+      child: new Text(
+        'Today',
+        style: new TextStyle(
+            color: Colors.black, fontSize: 36.0, fontWeight: FontWeight.bold),
+      ),
+      padding: new EdgeInsets.only(left: 15.0, bottom: 13.0, top: 30.0),
     );
   }
 }

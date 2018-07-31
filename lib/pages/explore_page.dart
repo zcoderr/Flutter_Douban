@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:doubanmovie_flutter/model/MovieIntro.dart';
 import 'package:doubanmovie_flutter/model/MovieIntroList.dart';
+import 'package:doubanmovie_flutter/utils/StarView.dart';
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' show parse;
@@ -37,6 +38,8 @@ class ExplorePageState extends State<ExplorePage> {
           new Container(
             height: 265.0,
             child: new ListView(
+              physics: const PageScrollPhysics(
+                  parent: const BouncingScrollPhysics()),
               scrollDirection: Axis.horizontal,
               children: new List.generate(_comingSoonData.length, (int index) {
                 return getComingSoonItem(index);
@@ -44,7 +47,7 @@ class ExplorePageState extends State<ExplorePage> {
             ),
           ),
           new Container(
-            height: 320.0,
+            height: 500.0,
             padding: new EdgeInsets.only(top: 15.0),
             child: new PageView(
               scrollDirection: Axis.horizontal,
@@ -101,7 +104,7 @@ class ExplorePageState extends State<ExplorePage> {
 
   Widget getWeeklyPager() {
     return new Container(
-      padding: new EdgeInsets.only(left: 15.0),
+      padding: new EdgeInsets.only(left: 17.0),
       child: new Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -113,21 +116,73 @@ class ExplorePageState extends State<ExplorePage> {
                 fontSize: 20.0),
           ),
           new Container(
-            height: 300.0,
+            height: 400.0,
+            padding: new EdgeInsets.only(top: 5.0),
             child: new ListView(
+              physics: new NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
-              children: new List.generate(4, (int index) {
+              children: new List.generate(5, (int index) {
                 return getWeeklyPagerItem(index);
               }),
             ),
-          )
+          ),
+          new Align(
+            alignment: new Alignment(0.0, 0.0),
+            child: new Text(
+              '显示全部（共10部）',
+              style: new TextStyle(fontSize: 13.0, color: Colors.grey),
+            ),
+          ),
         ],
       ),
     );
   }
 
   Widget getWeeklyPagerItem(int index) {
-    return new Text(_newMovieList[index]['title']);
+    return new Container(
+      padding: new EdgeInsets.only(top: 5.0),
+      child: new Row(
+        children: <Widget>[
+          Image.network(
+            _newMovieList[index]['img'],
+            width: 50.0,
+            height: 72.0,
+            fit: BoxFit.fill,
+          ),
+          new Container(
+            padding: new EdgeInsets.only(left: 5.0),
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Text(
+                  _newMovieList[index]['title'],
+                  style: new TextStyle(
+                    fontSize: 12.0,
+                    color: Colors.black,
+                  ),
+                ),
+                new StarView(
+                    80.0, 20.0, double.parse(_newMovieList[index]['score'])),
+                new Text(
+                  _newMovieList[index]['score'] + '分',
+                  style: new TextStyle(
+                    fontSize: 10.0,
+                    color: Colors.grey,
+                  ),
+                ),
+                new Text(
+                  _newMovieList[index]['num'],
+                  style: new TextStyle(
+                    fontSize: 10.0,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget getNewPager() {
@@ -194,7 +249,7 @@ class ExplorePageState extends State<ExplorePage> {
         print(img);
         movie['title'] = title;
         movie['id'] = id;
-        movie[score] = score;
+        movie['score'] = score;
         movie['num'] = num;
         movie['img'] = img;
 
