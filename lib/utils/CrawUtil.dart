@@ -5,7 +5,7 @@ import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart' as http;
 
 void main() {
-  new CrawUtil().getNewList();
+  new CrawUtil().getWeeklyList();
 }
 
 class CrawUtil {
@@ -91,6 +91,30 @@ class CrawUtil {
         //hdImgMap.addAll({movieId: imgUrl});
       }
       return list;
+    });
+  }
+
+  void getWeeklyList() {
+    http.get('https://movie.douban.com/chart').then((http.Response response) {
+      var document = parse(response.body.toString());
+      List<Element> newList = document
+          .getElementById('listCont2')
+          .getElementsByClassName('clearfix');
+
+      for (int i = 1; i < newList.length; i++) {
+        var info = newList[i].getElementsByTagName('a')[0];
+        var rank = newList[i]
+            .getElementsByTagName('span')[0]
+            .getElementsByTagName('div')[0];
+        String url = info.attributes['href'];
+        String ranking = rank.attributes['class'];
+        String change = rank.text.trim();
+        print(info.text.trim());
+        print(url);
+        print(ranking + change);
+
+        print('-------------------------------------------');
+      }
     });
   }
 }

@@ -15,19 +15,24 @@ class ExplorePage extends StatefulWidget {
 
 class ExplorePageState extends State<ExplorePage> {
   List<MovieIntro> _comingSoonData;
-  List _newMovieList = [];
+  List _newMovieList;
+  List _weeklyRankList;
+
   final PageController _pageController = new PageController();
   double _currentPage = 0.0;
 
   @override
   void initState() {
     loadComningSoonData();
-    loadRankingData();
+    loadNewRankData();
+    getWeeklyData();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_comingSoonData == null || _newMovieList == null) {
+    if (_comingSoonData == null ||
+        _newMovieList == null ||
+        _weeklyRankList == null) {
       return new Center(
         child: new CircularProgressIndicator(),
       );
@@ -50,6 +55,7 @@ class ExplorePageState extends State<ExplorePage> {
             height: 500.0,
             padding: new EdgeInsets.only(top: 15.0),
             child: new PageView(
+              controller: PageController(viewportFraction: 0.85),
               scrollDirection: Axis.horizontal,
               children: <Widget>[
                 getWeeklyPager(),
@@ -102,14 +108,14 @@ class ExplorePageState extends State<ExplorePage> {
     );
   }
 
-  Widget getWeeklyPager() {
+  Widget getNewPager() {
     return new Container(
       padding: new EdgeInsets.only(left: 17.0),
       child: new Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           new Text(
-            '本周口碑榜',
+            '新片榜',
             style: new TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -122,7 +128,7 @@ class ExplorePageState extends State<ExplorePage> {
               physics: new NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
               children: new List.generate(5, (int index) {
-                return getWeeklyPagerItem(index);
+                return getNewPagerItem(index);
               }),
             ),
           ),
@@ -138,7 +144,7 @@ class ExplorePageState extends State<ExplorePage> {
     );
   }
 
-  Widget getWeeklyPagerItem(int index) {
+  Widget getNewPagerItem(int index) {
     return new Container(
       padding: new EdgeInsets.only(top: 5.0),
       child: new Row(
@@ -185,19 +191,73 @@ class ExplorePageState extends State<ExplorePage> {
     );
   }
 
-  Widget getNewPager() {
+  Widget getWeeklyPager() {
     return new Container(
       padding: new EdgeInsets.only(left: 15.0),
       child: new Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           new Text(
-            '新片榜',
+            '本周口碑榜',
             style: new TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 20.0),
-          )
+          ),
+          new Container(
+            height: 450.0,
+            padding: new EdgeInsets.only(top: 5.0),
+            child: new ListView(
+              physics: new NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              children: new List.generate(10, (int index) {
+                return getWeeklyPageItem(index);
+              }),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget getWeeklyPageItem(int index) {
+    return new Container(
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+      ),
+      padding: new EdgeInsets.only(top: 8.0, bottom: 8.0, left: 3.0),
+      margin: new EdgeInsets.only(top: 3.0),
+      child: new Row(
+        children: <Widget>[
+          new Text(
+            _weeklyRankList[index]['id'] + '.',
+            style: new TextStyle(color: Colors.grey),
+          ),
+          new Container(
+            width: 250.0,
+            padding: new EdgeInsets.only(
+              left: 5.0,
+              right: 5.0,
+            ),
+            child: new Text(
+              _weeklyRankList[index]['title'],
+              maxLines: 1,
+              style: new TextStyle(color: Colors.black),
+            ),
+          ),
+          new Align(
+            alignment: new Alignment(1.0, 0.0),
+            child: new Row(
+              children: <Widget>[
+                _weeklyRankList[index]['rank'] == 'up'
+                    ? new Image.asset('images/icon_ranking_up.png',
+                        width: 10.0, height: 10.0)
+                    : new Image.asset('images/icon_ranking_down.png',
+                        width: 10.0, height: 10.0),
+                new Text(_weeklyRankList[index]['change']),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -217,7 +277,7 @@ class ExplorePageState extends State<ExplorePage> {
     });
   }
 
-  void loadRankingData() {
+  void loadNewRankData() {
     List<Map<String, String>> list = [];
     http.get('https://movie.douban.com/chart').then((http.Response response) {
       var document = parse(response.body.toString());
@@ -260,6 +320,42 @@ class ExplorePageState extends State<ExplorePage> {
 
       setState(() {
         _newMovieList = list;
+      });
+    });
+  }
+
+  void getWeeklyData() {
+    List<Map<String, String>> list = [];
+    http.get('https://movie.douban.com/chart').then((http.Response response) {
+      var document = parse(response.body.toString());
+      List<dom.Element> newList = document
+          .getElementById('listCont2')
+          .getElementsByClassName('clearfix');
+
+      for (int i = 1; i < newList.length; i++) {
+        Map<String, String> movie = new Map();
+
+        var info = newList[i].getElementsByTagName('a')[0];
+        var rank = newList[i]
+            .getElementsByTagName('span')[0]
+            .getElementsByTagName('div')[0];
+        String url = info.attributes['href'];
+        String ranking = rank.attributes['class'];
+        String change = rank.text.trim();
+
+        print(info.text.trim());
+        print(url);
+        print(ranking + change);
+        movie['id'] = i.toString();
+        movie['title'] = info.text.trim();
+        movie['url'] = url;
+        movie['rank'] = ranking;
+        movie['change'] = change;
+        list.add(movie);
+        print('-------------------------------------------');
+      }
+      setState(() {
+        _weeklyRankList = list;
       });
     });
   }

@@ -202,7 +202,7 @@ class HotListTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Container(
       child: new Text(
-        'Today',
+        '首页',
         style: new TextStyle(
             color: Colors.black, fontSize: 36.0, fontWeight: FontWeight.bold),
       ),
