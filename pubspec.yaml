@@ -60,6 +60,8 @@ flutter:
       - images/icon_github.png
       - images/icon_qq.png
       - images/icon_wx.png
+      - images/icon_api.png
+      - images/icon_flutter.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

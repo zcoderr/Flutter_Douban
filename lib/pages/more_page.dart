@@ -15,19 +15,25 @@ class _MorePageState extends State<MorePage> {
         getMorePageTitle(),
         getHeaderSection(),
         getButtonSection(),
-        //getAboutSection(),
+        getQqGroupSection(),
+        getThanksForApi(),
       ],
     );
   }
 
   Widget getHeaderSection() {
     return new Container(
-      padding:
-          new EdgeInsets.only(top: 25.0, bottom: 25.0, left: 15.0, right: 15.0),
+      margin: new EdgeInsets.only(left: 15.0, right: 15.0),
+      decoration: new BoxDecoration(
+        border: new Border(
+          top: new BorderSide(color: Colors.grey.shade200, width: 1.0),
+        ),
+      ),
+      padding: new EdgeInsets.only(top: 15.0, bottom: 15.0),
       child: new Stack(
         children: <Widget>[
           new Container(
-            height: 60.0,
+            height: 80.0,
             alignment: new FractionalOffset(0.0, 0.5),
             child: new Text(
               'Flutter-豆瓣电影',
@@ -40,18 +46,18 @@ class _MorePageState extends State<MorePage> {
           new Align(
             alignment: new FractionalOffset(1.0, 0.0),
             child: new Container(
-              width: 60.0,
-              height: 60.0,
+              width: 80.0,
+              height: 80.0,
               decoration: new BoxDecoration(
                 image: new DecorationImage(
                   image: new AssetImage('images/flutter_logo.png'),
                   fit: BoxFit.cover,
                 ),
-                color: Colors.green.shade100,
-                borderRadius: new BorderRadius.all(new Radius.circular(30.0)),
+                color: Colors.white,
+                borderRadius: new BorderRadius.all(new Radius.circular(40.0)),
                 border: new Border.all(
                   color: Colors.grey.shade200,
-                  width: 0.0,
+                  width: 1.0,
                 ),
               ),
             ),
@@ -61,35 +67,37 @@ class _MorePageState extends State<MorePage> {
     );
   }
 
-  Widget getAboutSection() {
-    return new Padding(
-      padding: new EdgeInsets.only(left: 15.0, right: 15.0),
-      child: new Container(
-        padding: new EdgeInsets.only(
-            left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
-        margin: new EdgeInsets.only(top: 5.0),
-        decoration: new BoxDecoration(color: Colors.grey.shade100),
-        child: new Stack(
-          children: <Widget>[
-            Image.asset(
-              'images/icon_explore_normal.png',
-              width: 20.0,
-              height: 20.0,
-            ),
-            new Container(
-              margin: new EdgeInsets.only(left: 40.0),
-              child: new Text('关 于'),
-            ),
-            new Container(
-              alignment: new Alignment(1.0, 0.0),
-              child: Image.asset(
-                'images/icon_explore_normal.png',
-                width: 20.0,
-                height: 20.0,
+  Widget getHeaderSection2() {
+    return new Container(
+      margin: new EdgeInsets.only(left: 15.0, right: 15.0),
+      decoration: new BoxDecoration(
+        border: new Border(
+          top: new BorderSide(color: Colors.grey.shade200, width: 1.0),
+        ),
+      ),
+      padding: new EdgeInsets.only(top: 15.0, bottom: 15.0),
+      child: new Stack(
+        children: <Widget>[
+          new Container(
+            height: 80.0,
+            alignment: new FractionalOffset(0.0, 0.5),
+            child: new Text(
+              '豆瓣电影',
+              style: new TextStyle(
+                fontSize: 24.0,
+                color: Colors.black,
               ),
             ),
-          ],
-        ),
+          ),
+          new Align(
+            alignment: new FractionalOffset(1.0, 0.0),
+            child: new Image.asset(
+              'images/icon_flutter.png',
+              width: 200.0,
+              height: 80.0,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -97,8 +105,9 @@ class _MorePageState extends State<MorePage> {
   Widget getButtonSection() {
     return new Container(
         height: 120.0,
+        margin: new EdgeInsets.only(top: 5.0),
         padding: new EdgeInsets.only(
-            left: 15.0, right: 15.0, top: 15.0, bottom: 15.0),
+            left: 10.0, right: 10.0, top: 15.0, bottom: 15.0),
         color: Colors.grey.shade100,
         child: new Container(
           child: new Flex(
@@ -115,8 +124,8 @@ class _MorePageState extends State<MorePage> {
                     children: <Widget>[
                       Image.asset(
                         'images/icon_github.png',
-                        width: 50.0,
-                        height: 50.0,
+                        width: 40.0,
+                        height: 40.0,
                       ),
                       new Container(
                         padding: new EdgeInsets.only(top: 10.0),
@@ -124,7 +133,7 @@ class _MorePageState extends State<MorePage> {
                           '开源地址',
                           style: new TextStyle(
                             color: Colors.black,
-                            fontSize: 12.0,
+                            fontSize: 13.0,
                           ),
                         ),
                       )
@@ -143,8 +152,8 @@ class _MorePageState extends State<MorePage> {
                     children: <Widget>[
                       Image.asset(
                         'images/icon_blog.png',
-                        width: 50.0,
-                        height: 50.0,
+                        width: 40.0,
+                        height: 40.0,
                       ),
                       new Container(
                         padding: new EdgeInsets.only(top: 10.0),
@@ -152,7 +161,7 @@ class _MorePageState extends State<MorePage> {
                           '文章',
                           style: new TextStyle(
                             color: Colors.black,
-                            fontSize: 12.0,
+                            fontSize: 13.0,
                           ),
                         ),
                       )
@@ -171,8 +180,8 @@ class _MorePageState extends State<MorePage> {
                     children: <Widget>[
                       Image.asset(
                         'images/icon_wx.png',
-                        width: 50.0,
-                        height: 50.0,
+                        width: 40.0,
+                        height: 40.0,
                       ),
                       new Container(
                         padding: new EdgeInsets.only(top: 10.0),
@@ -180,7 +189,7 @@ class _MorePageState extends State<MorePage> {
                           '微信公众号',
                           style: new TextStyle(
                             color: Colors.black,
-                            fontSize: 12.0,
+                            fontSize: 13.0,
                           ),
                         ),
                       )
@@ -193,11 +202,55 @@ class _MorePageState extends State<MorePage> {
         ));
   }
 
-  Widget getGithubSection() {}
+  Widget getQqGroupSection() {
+    return new Container(
+      padding:
+          new EdgeInsets.only(left: 15.0, right: 15.0, top: 15.0, bottom: 15.0),
+      margin: new EdgeInsets.only(top: 15.0),
+      decoration: new BoxDecoration(color: Colors.grey.shade100),
+      child: new Row(
+        children: <Widget>[
+          Image.asset(
+            'images/icon_qq.png',
+            width: 25.0,
+            height: 25.0,
+          ),
+          new Container(
+            margin: new EdgeInsets.only(left: 15.0),
+            child: new Text(
+              'Flutter技术讨论群',
+              style: new TextStyle(fontSize: 15.0),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-  Widget getWXSection() {}
-
-  Widget getQQGroupSection() {}
+  Widget getThanksForApi() {
+    return new Container(
+      padding:
+          new EdgeInsets.only(left: 15.0, right: 15.0, top: 15.0, bottom: 15.0),
+      margin: new EdgeInsets.only(top: 5.0),
+      decoration: new BoxDecoration(color: Colors.grey.shade100),
+      child: new Row(
+        children: <Widget>[
+          Image.asset(
+            'images/icon_api.png',
+            width: 25.0,
+            height: 25.0,
+          ),
+          new Container(
+            margin: new EdgeInsets.only(left: 15.0),
+            child: new Text(
+              '感谢豆瓣提供的Api',
+              style: new TextStyle(fontSize: 15.0),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget getMorePageTitle() {
     return new Container(
