@@ -8,6 +8,8 @@ import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart' as http;
 
+import 'movie_detail_page.dart';
+
 class ExplorePage extends StatefulWidget {
   @override
   State createState() => new ExplorePageState();
@@ -80,31 +82,36 @@ class ExplorePageState extends State<ExplorePage> {
   }
 
   Widget getComingSoonItem(int index) {
-    return new Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        new Container(
-          child: new Text(
-            _comingSoonData[index].title,
-            style:
-                new TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+    return new InkWell(
+      onTap: () {
+        toDetailPage(_comingSoonData[index].id);
+      },
+      child: new Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          new Container(
+            child: new Text(
+              _comingSoonData[index].title,
+              style: new TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+            padding: new EdgeInsets.only(left: 17.0, bottom: 5.0),
           ),
-          padding: new EdgeInsets.only(left: 17.0, bottom: 5.0),
-        ),
-        new Container(
-          height: 230.0,
-          padding: new EdgeInsets.only(left: 15.0),
-          child: new AspectRatio(
-            aspectRatio: 28.0 / 37.0,
-            child: new Card(
-              child: new Image.network(
-                _comingSoonData[index].images.large,
-                fit: BoxFit.fill,
+          new Container(
+            height: 230.0,
+            padding: new EdgeInsets.only(left: 15.0),
+            child: new AspectRatio(
+              aspectRatio: 28.0 / 37.0,
+              child: new Card(
+                child: new Image.network(
+                  _comingSoonData[index].images.large,
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -145,48 +152,53 @@ class ExplorePageState extends State<ExplorePage> {
   }
 
   Widget getNewPagerItem(int index) {
-    return new Container(
-      padding: new EdgeInsets.only(top: 5.0),
-      child: new Row(
-        children: <Widget>[
-          Image.network(
-            _newMovieList[index]['img'],
-            width: 50.0,
-            height: 72.0,
-            fit: BoxFit.fill,
-          ),
-          new Container(
-            padding: new EdgeInsets.only(left: 5.0),
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new Text(
-                  _newMovieList[index]['title'],
-                  style: new TextStyle(
-                    fontSize: 12.0,
-                    color: Colors.black,
-                  ),
-                ),
-                new StarView(
-                    80.0, 20.0, double.parse(_newMovieList[index]['score'])),
-                new Text(
-                  _newMovieList[index]['score'] + '分',
-                  style: new TextStyle(
-                    fontSize: 10.0,
-                    color: Colors.grey,
-                  ),
-                ),
-                new Text(
-                  _newMovieList[index]['num'],
-                  style: new TextStyle(
-                    fontSize: 10.0,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
+    return new InkWell(
+      onTap: () {
+        toDetailPage(_newMovieList[index]['id']);
+      },
+      child: new Container(
+        padding: new EdgeInsets.only(top: 5.0),
+        child: new Row(
+          children: <Widget>[
+            Image.network(
+              _newMovieList[index]['img'],
+              width: 50.0,
+              height: 72.0,
+              fit: BoxFit.fill,
             ),
-          ),
-        ],
+            new Container(
+              padding: new EdgeInsets.only(left: 5.0),
+              child: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  new Text(
+                    _newMovieList[index]['title'],
+                    style: new TextStyle(
+                      fontSize: 12.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                  new StarView(
+                      80.0, 20.0, double.parse(_newMovieList[index]['score'])),
+                  new Text(
+                    _newMovieList[index]['score'] + '分',
+                    style: new TextStyle(
+                      fontSize: 10.0,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  new Text(
+                    _newMovieList[index]['num'],
+                    style: new TextStyle(
+                      fontSize: 10.0,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -221,44 +233,49 @@ class ExplorePageState extends State<ExplorePage> {
   }
 
   Widget getWeeklyPageItem(int index) {
-    return new Container(
-      decoration: BoxDecoration(
-        color: Colors.grey.shade100,
-      ),
-      padding: new EdgeInsets.only(top: 8.0, bottom: 8.0, left: 3.0),
-      margin: new EdgeInsets.only(top: 3.0),
-      child: new Row(
-        children: <Widget>[
-          new Text(
-            _weeklyRankList[index]['id'] + '.',
-            style: new TextStyle(color: Colors.grey),
-          ),
-          new Container(
-            width: 250.0,
-            padding: new EdgeInsets.only(
-              left: 5.0,
-              right: 5.0,
+    return new InkWell(
+      onTap: () {
+        toDetailPage(_weeklyRankList[index]['id']);
+      },
+      child: new Container(
+        decoration: BoxDecoration(
+          color: Colors.grey.shade100,
+        ),
+        padding: new EdgeInsets.only(top: 8.0, bottom: 8.0, left: 3.0),
+        margin: new EdgeInsets.only(top: 3.0),
+        child: new Row(
+          children: <Widget>[
+            new Text(
+              _weeklyRankList[index]['rankid'] + '.',
+              style: new TextStyle(color: Colors.grey),
             ),
-            child: new Text(
-              _weeklyRankList[index]['title'],
-              maxLines: 1,
-              style: new TextStyle(color: Colors.black),
+            new Container(
+              width: 250.0,
+              padding: new EdgeInsets.only(
+                left: 5.0,
+                right: 5.0,
+              ),
+              child: new Text(
+                _weeklyRankList[index]['title'],
+                maxLines: 1,
+                style: new TextStyle(color: Colors.black),
+              ),
             ),
-          ),
-          new Align(
-            alignment: new Alignment(1.0, 0.0),
-            child: new Row(
-              children: <Widget>[
-                _weeklyRankList[index]['rank'] == 'up'
-                    ? new Image.asset('images/icon_ranking_up.png',
-                        width: 10.0, height: 10.0)
-                    : new Image.asset('images/icon_ranking_down.png',
-                        width: 10.0, height: 10.0),
-                new Text(_weeklyRankList[index]['change']),
-              ],
+            new Align(
+              alignment: new Alignment(1.0, 0.0),
+              child: new Row(
+                children: <Widget>[
+                  _weeklyRankList[index]['rank'] == 'up'
+                      ? new Image.asset('images/icon_ranking_up.png',
+                          width: 10.0, height: 10.0)
+                      : new Image.asset('images/icon_ranking_down.png',
+                          width: 10.0, height: 10.0),
+                  new Text(_weeklyRankList[index]['change']),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -288,7 +305,7 @@ class ExplorePageState extends State<ExplorePage> {
       for (var item in newList) {
         Map<String, String> movie = new Map();
 
-        String id = item.getElementsByTagName('a')[0].attributes['href'];
+        String url = item.getElementsByTagName('a')[0].attributes['href'];
         String title = item.getElementsByTagName('a')[0].attributes['title'];
         String score = item
             .getElementsByClassName('star clearfix')[0]
@@ -301,14 +318,14 @@ class ExplorePageState extends State<ExplorePage> {
             .text;
 
         String img = item.getElementsByTagName('img')[0].attributes['src'];
-
+        String movieId = url.split('/')[4].trim();
         print(title);
-        print(id);
+        print(url);
         print(score);
         print(num);
         print(img);
         movie['title'] = title;
-        movie['id'] = id;
+        movie['id'] = movieId;
         movie['score'] = score;
         movie['num'] = num;
         movie['img'] = img;
@@ -342,21 +359,36 @@ class ExplorePageState extends State<ExplorePage> {
         String url = info.attributes['href'];
         String ranking = rank.attributes['class'];
         String change = rank.text.trim();
+        String movieId = url.split('/')[4].trim();
 
         print(info.text.trim());
         print(url);
         print(ranking + change);
-        movie['id'] = i.toString();
+        movie['rankid'] = i.toString();
         movie['title'] = info.text.trim();
         movie['url'] = url;
         movie['rank'] = ranking;
         movie['change'] = change;
+        movie['id'] = movieId;
+
         list.add(movie);
         print('-------------------------------------------');
       }
       setState(() {
         _weeklyRankList = list;
       });
+    });
+  }
+
+  toDetailPage(String movieId) {
+    setState(() {
+      Navigator.of(context).push(new MaterialPageRoute<Null>(
+        builder: (BuildContext context) {
+          return new MovieDetailPage(
+            movieId: movieId,
+          );
+        },
+      ));
     });
   }
 }

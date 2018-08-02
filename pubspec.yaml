@@ -55,6 +55,11 @@ flutter:
       - images/icon_more_normal.png
       - images/icon_ranking_up.png
       - images/icon_ranking_down.png
+      - images/flutter_logo.png
+      - images/icon_blog.png
+      - images/icon_github.png
+      - images/icon_qq.png
+      - images/icon_wx.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

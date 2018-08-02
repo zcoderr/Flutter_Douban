@@ -1,69 +1,69 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:math' as Math;
 import 'dart:ui' as ui;
 
 import 'package:doubanmovie_flutter/model//MovieDetail.dart';
-import 'package:doubanmovie_flutter/model//MovieIntro.dart';
 import 'package:doubanmovie_flutter/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class MovieDetailPage extends StatelessWidget {
-  String hdImgUrl;
-  MovieIntro movieIntro;
+  String movieId;
 
-  MovieDetailPage({Key key, this.hdImgUrl, this.movieIntro}) : super(key: key);
+  MovieDetailPage({Key key, this.movieId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: _MovieDetailPageBuilder(movieIntro.id, hdImgUrl),
+      body: _MovieDetailPageBuilder(movieId),
     );
   }
 }
 
 class _MovieDetailPageBuilder extends StatefulWidget {
   String _movieId;
-  String hdImgUrl;
-  _MovieDetailPageBuilder(this._movieId, this.hdImgUrl);
+
+  _MovieDetailPageBuilder(this._movieId);
 
   @override
   State<StatefulWidget> createState() {
-    return new _MovieDetailPageBuilderState(_movieId, hdImgUrl);
+    return new _MovieDetailPageBuilderState(_movieId);
   }
 }
 
 class _MovieDetailPageBuilderState extends State<_MovieDetailPageBuilder> {
   String _movieId;
   String hdImgUrl;
-  var _movieDetailMap;
   MovieDetail movieDetail;
-  Color _titleBarColor = Colors.teal;
+  Color _titleBarColor;
 
-  _MovieDetailPageBuilderState(this._movieId, this.hdImgUrl);
+  _MovieDetailPageBuilderState(this._movieId);
 
   @override
   void initState() {
     super.initState();
     loadData();
-    getImageAndPalette();
   }
 
-  Future<void> getImageAndPalette() async {
-    Palette palette = await PaletteLib.getPaletteWithUrl(hdImgUrl);
-    print(palette.darkVibrant.color.toString());
+  getImageAndPalette() async {
+    Palette palette =
+        await PaletteLib.getPaletteWithUrl(movieDetail.images.large);
+    //print(palette.darkVibrant.color.toString());
 
     if (!mounted) return;
 
     setState(() {
-      _titleBarColor = palette.vibrant.color;
+      if (palette.vibrant == null) {
+        _titleBarColor = Colors.teal;
+      } else {
+        _titleBarColor = palette.vibrant.color;
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_movieDetailMap != null) {
+    if (movieDetail != null && _titleBarColor != null) {
       return CustomScrollView(
         slivers: <Widget>[
           new SliverAppBar(
@@ -114,11 +114,12 @@ class _MovieDetailPageBuilderState extends State<_MovieDetailPageBuilder> {
     http
         .get('https://api.douban.com/v2/movie/subject/' + _movieId)
         .then((http.Response response) {
+      JsonDecoder jsonDecoder = new JsonDecoder();
+      var _movieDetailMap = jsonDecoder.convert(response.body);
       setState(() {
-        JsonDecoder jsonDecoder = new JsonDecoder();
-        _movieDetailMap = jsonDecoder.convert(response.body);
         movieDetail = new MovieDetail.fromJson(_movieDetailMap);
       });
+      getImageAndPalette();
     });
   }
 
@@ -306,7 +307,9 @@ class _MovieDetailPageBuilderState extends State<_MovieDetailPageBuilder> {
           padding: new EdgeInsets.only(
               top: 10.0, left: 12.0, right: 12.0, bottom: 5.0),
           child: Image.network(
-            movieDetail.casts[pos].avatars.large,
+            movieDetail.casts[pos].avatars == null
+                ? ""
+                : movieDetail.casts[pos].avatars.large,
             width: 70.0,
             height: 100.0,
           ),
@@ -323,7 +326,9 @@ class _MovieDetailPageBuilderState extends State<_MovieDetailPageBuilder> {
           padding: new EdgeInsets.only(
               top: 10.0, left: 6.0, right: 6.0, bottom: 5.0),
           child: Image.network(
-            movieDetail.directors[0].avatars.large,
+            movieDetail.directors[0].avatars == null
+                ? ""
+                : movieDetail.directors[0].avatars.large,
             width: 70.0,
             height: 100.0,
           ),

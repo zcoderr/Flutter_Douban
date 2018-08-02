@@ -37,7 +37,7 @@ class HotListState extends State<HotList> {
   Widget getListItem(int pos) {
     return new InkWell(
       onTap: () {
-        toDetailPage(pos);
+        toDetailPage(datas[pos].id);
       },
       child: new Padding(
         padding: new EdgeInsets.only(left: 15.0, right: 15.0, bottom: 10.0),
@@ -107,13 +107,12 @@ class HotListState extends State<HotList> {
     );
   }
 
-  toDetailPage(int pos) {
+  toDetailPage(String movieId) {
     setState(() {
       Navigator.of(context).push(new MaterialPageRoute<Null>(
         builder: (BuildContext context) {
           return new MovieDetailPage(
-            hdImgUrl: hdImgMap[datas[pos].id],
-            movieIntro: datas[pos],
+            movieId: movieId,
           );
         },
       ));

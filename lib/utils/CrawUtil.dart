@@ -109,6 +109,8 @@ class CrawUtil {
         String url = info.attributes['href'];
         String ranking = rank.attributes['class'];
         String change = rank.text.trim();
+        String movieId = url.split('/')[4].trim();
+        print(movieId);
         print(info.text.trim());
         print(url);
         print(ranking + change);
