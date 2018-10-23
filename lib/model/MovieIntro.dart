@@ -6,6 +6,7 @@ import 'MovieRate.dart';
 
 part 'MovieIntro.g.dart';
 
+///电影概要信息
 @JsonSerializable()
 class MovieIntro extends Object with _$MovieIntroSerializerMixin {
   MovieRate rating;

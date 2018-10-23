@@ -5,7 +5,7 @@ import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart' as http;
 
 void main() {
-  new CrawUtil().getWeeklyList();
+  new CrawUtil().getWeeklyData();
 }
 
 class CrawUtil {
@@ -115,6 +115,45 @@ class CrawUtil {
         print(url);
         print(ranking + change);
 
+        print('-------------------------------------------');
+      }
+    });
+  }
+
+  void getWeeklyData() {
+    List<Map<String, String>> list = [];
+    http.get('https://movie.douban.com/chart').then((http.Response response) {
+      var document = parse(response.body.toString());
+      print('1');
+      //print(response.body.toString());
+      List<Element> newList = document
+          .getElementById('listCont2')
+          .getElementsByClassName('clearfix');
+      print(document.getElementById('listCont2').text);
+      for (int i = 1; i < newList.length; i++) {
+        print('2');
+        Map<String, String> movie = new Map();
+
+        var info = newList[i].getElementsByTagName('a')[0];
+        var rank = newList[i]
+            .getElementsByTagName('span')[0]
+            .getElementsByTagName('div')[0];
+        String url = info.attributes['href'];
+        String ranking = rank.attributes['class'];
+        String change = rank.text.trim();
+        String movieId = url.split('/')[4].trim();
+
+        print(info.text.trim());
+        print(url);
+        print(ranking + change);
+        movie['rankid'] = i.toString();
+        movie['title'] = info.text.trim();
+        movie['url'] = url;
+        movie['rank'] = ranking;
+        movie['change'] = change;
+        movie['id'] = movieId;
+
+        list.add(movie);
         print('-------------------------------------------');
       }
     });

@@ -216,17 +216,28 @@ class ExplorePageState extends State<ExplorePage> {
                 fontWeight: FontWeight.bold,
                 fontSize: 20.0),
           ),
-          new Container(
-            height: 450.0,
-            padding: new EdgeInsets.only(top: 5.0),
-            child: new ListView(
-              physics: new NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              children: new List.generate(10, (int index) {
-                return getWeeklyPageItem(index);
-              }),
-            ),
-          ),
+          _weeklyRankList.length == 0
+              ? new Container(
+                  height: 350.0,
+                  child: new Center(
+                    child: new Text(
+                      '暂 无 数 据',
+                      style: new TextStyle(fontSize: 16.0),
+                    ),
+                  ),
+                )
+              : new Container(
+                  height: 450.0,
+                  padding: new EdgeInsets.only(top: 5.0),
+                  child: new ListView(
+                    physics: new NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    children:
+                        new List.generate(_weeklyRankList.length, (int index) {
+                      return getWeeklyPageItem(index);
+                    }),
+                  ),
+                ),
         ],
       ),
     );

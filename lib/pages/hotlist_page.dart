@@ -8,24 +8,25 @@ import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart' as http;
 
-class HotListPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new HotList();
-  }
-}
+/// 首页-热门电影列表
+/// Desc：请求豆瓣热门电影列表接口，根据接口返回的电影列表数据，用爬虫方法获取高清的电影海报地址
 
-class HotList extends StatefulWidget {
+class HotListPage extends StatefulWidget {
   @override
   State createState() {
     return new HotListState();
   }
 }
 
-class HotListState extends State<HotList> {
-  var datas;
+class HotListState extends State<HotListPage> {
+  // 网络数据
+  var _data;
+
+  // 卡片数组
   List cards = [];
   int curPage = 0;
+
+  // 存放高清电影海报的数组
   Map<String, String> hdImgMap;
 
   @override
@@ -37,30 +38,38 @@ class HotListState extends State<HotList> {
   Widget getListItem(int pos) {
     return new InkWell(
       onTap: () {
-        toDetailPage(datas[pos].id);
+        toDetailPage(_data[pos].id);
       },
       child: new Padding(
         padding: new EdgeInsets.only(left: 15.0, right: 15.0, bottom: 10.0),
         child: new AspectRatio(
           aspectRatio: 28.0 / 37.0,
           child: new Card(
-            elevation: 7.0,
+            // 卡片
+            clipBehavior: Clip.hardEdge,
+            elevation: 5.0,
             shape: new RoundedRectangleBorder(
+              // 圆角
               borderRadius: BorderRadius.all(
-                Radius.circular(10.0),
+                Radius.circular(16.0),
               ),
             ),
             child: new Stack(
               fit: StackFit.expand,
               children: <Widget>[
-                new Image.network(datas[pos].images.large, fit: BoxFit.fill),
+                new Image.network(_data[pos].images.large, fit: BoxFit.fill),
                 hdImgMap == null
-                    ? new Text('')
-                    : new MovieCover(hdImgMap[datas[pos].id]),
+                    ? new Text('...') // 为空的时候什么都不显示
+                    : Image.network(
+                        // 不为空，加载高清图
+                        hdImgMap[_data[pos].id],
+                        fit: BoxFit.fill,
+                      ),
                 new Positioned(
                   left: 0.0,
                   top: 0.0,
                   child: Container(
+                    // 卡片上部半透明蒙层
                     padding: new EdgeInsets.only(
                         left: 15.0, top: 10.0, right: 500.0, bottom: 10.0),
                     decoration: new BoxDecoration(
@@ -80,7 +89,7 @@ class HotListState extends State<HotList> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         new Text(
-                          '评分:${datas[pos].rating.average}',
+                          '评分:${_data[pos].rating.average}',
                           style: new TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -88,7 +97,7 @@ class HotListState extends State<HotList> {
                           ),
                         ),
                         new Text(
-                          datas[pos].title,
+                          _data[pos].title,
                           style: new TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -125,48 +134,55 @@ class HotListState extends State<HotList> {
     return null;
   }
 
+  // 爬虫方法获取高清的电影封面图
   void getHdImgCover() async {
     Map<String, String> map = new Map();
-    await http
-        .get('https://movie.douban.com/cinema/nowplaying/beijing/')
-        .then((http.Response response) {
-      new Future(() {
-        var document = parse(response.body.toString());
-        List<dom.Element> items = document.getElementsByClassName('list-item');
-        for (var item in items) {
-          var url =
-              item.getElementsByTagName('img')[0].attributes['src'].toString();
-          String movieId = item.attributes['data-subject'].toString();
+    await http.get('https://movie.douban.com/cinema/nowplaying/beijing/').then(
+      (http.Response response) {
+        new Future(
+          () {
+            var document = parse(response.body.toString());
+            List<dom.Element> items =
+                document.getElementsByClassName('list-item');
+            for (var item in items) {
+              var url = item
+                  .getElementsByTagName('img')[0]
+                  .attributes['src']
+                  .toString();
+              String movieId = item.attributes['data-subject'].toString();
 
-          RegExp exp = new RegExp('public\/p.+\.jpg');
-          String s = exp.firstMatch(url).group(0);
+              RegExp exp = new RegExp('public\/p.+\.jpg');
+              String s = exp.firstMatch(url).group(0);
 
-          String imgId = s.substring(8, 18);
-          String imgUrl = "https://img1.doubanio.com/view/photo/m/public/p" +
-              imgId +
-              ".jpg";
-          print(imgUrl);
-          map[movieId] = imgUrl;
-        }
-        return map;
-      }).then((map) {
-        setState(() {
-          hdImgMap = map;
-        });
-      });
-    });
+              String imgId = s.substring(8, 18);
+              String imgUrl =
+                  "https://img1.doubanio.com/view/photo/l/public/p" +
+                      imgId +
+                      ".jpg";
+              print("获取到封面： " + imgUrl);
+              map[movieId] = imgUrl;
+              setState(
+                () {
+                  hdImgMap = map;
+                },
+              );
+            }
+          },
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    if (datas == null) {
+    if (_data == null) {
       return new Center(
         child: new CircularProgressIndicator(),
       );
     } else {
       return new RefreshIndicator(
           child: new ListView.builder(
-            itemCount: datas.length + 1,
+            itemCount: _data.length + 1,
             itemBuilder: (BuildContext context, int position) {
               if (position == 0) {
                 return new HotListTitle();
@@ -179,23 +195,29 @@ class HotListState extends State<HotList> {
     }
   }
 
+  // 加载豆瓣的数据
   void loadData(bool isLoadMore) {
     http
         .get('https://api.douban.com/v2/movie/in_theaters')
         .then((http.Response response) {
       JsonDecoder jsonDecoder = new JsonDecoder();
-      Map map = jsonDecoder.convert(response.body);
-      cards = map['subjects'];
+      Map respMap = jsonDecoder.convert(response.body);
+      // 解析数据
+      MovieIntroList list = new MovieIntroList.fromJson(respMap);
 
-      MovieIntroList list = new MovieIntroList.fromJson(map);
+      //cards = list.subjects;
+      cards = respMap['subjects'];
+      print("resp" + cards.toString());
       setState(() {
-        datas = list.subjects;
+        _data = list.subjects;
       });
+
       getHdImgCover();
     });
   }
 }
 
+// 顶部标题
 class HotListTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -207,55 +229,5 @@ class HotListTitle extends StatelessWidget {
       ),
       padding: new EdgeInsets.only(left: 15.0, bottom: 13.0, top: 30.0),
     );
-  }
-}
-
-class MovieCover extends StatefulWidget {
-  String imgUrl;
-
-  MovieCover(this.imgUrl);
-
-  @override
-  State createState() {
-    return new MovieCoverState(imgUrl);
-  }
-}
-
-class MovieCoverState extends State<MovieCover> {
-  String imgUrl;
-  Image hdImage;
-
-  MovieCoverState(this.imgUrl);
-
-  @override
-  void initState() {
-    parseHdImgUrl();
-  }
-
-  @override
-  void didUpdateWidget(MovieCover oldWidget) {}
-
-  @override
-  Widget build(BuildContext context) {
-    return hdImage == null ? new Text('') : hdImage;
-//    return Image.network(
-//      imgUrl,
-//      fit: BoxFit.fill,
-//    );
-  }
-
-  parseHdImgUrl() async {
-    if (imgUrl == null) {
-      return;
-    }
-    Image image;
-    image = Image.network(
-      imgUrl,
-      fit: BoxFit.fill,
-    );
-
-    setState(() {
-      hdImage = image;
-    });
   }
 }

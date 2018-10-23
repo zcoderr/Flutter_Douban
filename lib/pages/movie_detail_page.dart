@@ -441,25 +441,25 @@ class ScorePainter extends CustomPainter {
   getStarPath(double R, double r, double x, double y, double rot) {
     Path path = new Path();
 
-    path.moveTo(Math.cos((54 + 72 * -1 - rot) / 180 * Math.PI) * r + x,
-        -Math.sin((54 + 72 * -1 - rot) / 180 * Math.PI) * r + y);
+    path.moveTo(Math.cos((54 + 72 * -1 - rot) / 180 * Math.pi) * r + x,
+        -Math.sin((54 + 72 * -1 - rot) / 180 * Math.pi) * r + y);
 
     for (var i = 0; i < 5; i++) {
-      path.lineTo(Math.cos((18 + 72 * i - rot) / 180 * Math.PI) * R + x,
-          -Math.sin((18 + 72 * i - rot) / 180 * Math.PI) * R + y);
-      path.lineTo(Math.cos((54 + 72 * i - rot) / 180 * Math.PI) * r + x,
-          -Math.sin((54 + 72 * i - rot) / 180 * Math.PI) * r + y);
+      path.lineTo(Math.cos((18 + 72 * i - rot) / 180 * Math.pi) * R + x,
+          -Math.sin((18 + 72 * i - rot) / 180 * Math.pi) * R + y);
+      path.lineTo(Math.cos((54 + 72 * i - rot) / 180 * Math.pi) * r + x,
+          -Math.sin((54 + 72 * i - rot) / 180 * Math.pi) * r + y);
     }
     path.close();
     return path;
   }
 
   double cos(int num) {
-    return Math.cos(num * Math.PI / 180);
+    return Math.cos(num * Math.pi / 180);
   }
 
   double sin(int num) {
-    return Math.sin(num * Math.PI / 180);
+    return Math.sin(num * Math.pi / 180);
   }
 }
 
