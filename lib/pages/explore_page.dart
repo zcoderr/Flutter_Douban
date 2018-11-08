@@ -25,8 +25,11 @@ class ExplorePageState extends State<ExplorePage> {
 
   @override
   void initState() {
+    // 即将上映
     loadComningSoonData();
+    // 新片排行
     loadNewRankData();
+    // 周排行
     getWeeklyData();
   }
 

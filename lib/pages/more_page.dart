@@ -202,7 +202,7 @@ class _MorePageState extends State<MorePage> {
             new Container(
               margin: new EdgeInsets.only(left: 15.0),
               child: new Text(
-                'Flutter技术讨论群',
+                'Flutter 技术讨论群',
                 style: new TextStyle(fontSize: 15.0),
               ),
             ),
