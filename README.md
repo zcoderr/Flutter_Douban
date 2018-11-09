@@ -3,17 +3,13 @@
 
 > App 截图
 
-
-<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0309.PNG" width="50%" align="left"/>
-<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0310.PNG" width="50%" align="right"/>&nbsp;
-
-<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0319.PNG" width="50%" align="left"/>
-<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0320.PNG" width="50%" align="right"/>&nbsp;
-
-<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0311.PNG" width="50%" align="left"/>
-<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0312.PNG" width="50%" align="right"/>&nbsp;
-
-<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0313.PNG" width="50%" align="center"/>
+<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0309.PNG" width="35%"/>&nbsp;
+<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0310.PNG" width="35%"/>&nbsp;
+<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0319.PNG" width="35%"/>&nbsp;
+<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0320.PNG" width="35%"/>&nbsp;
+<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0311.PNG" width="35%"/>&nbsp;
+<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0312.PNG" width="35%"/>&nbsp;
+<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0313.PNG" width="35%"/>&nbsp;
 
 
 > 涉及知识点目录
