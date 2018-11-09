@@ -1,18 +1,22 @@
 使用豆瓣 Api 实现了一个精美的 Flutter 版豆瓣电影客户端，细节很完善，更像一个经过完整设计的产品而非 Demo，期间踩了不少坑，该文档会持续更新，包括从最开始环境安装到最后打包App的过程中涉及的知识点以及一些个人思考。
 
-![](https://storage-1251325576.picbj.myqcloud.com/blog/2018-11-08-IMG_0309-1.PNG?imageView2/2/w/300/q/100)![](https://storage-1251325576.picbj.myqcloud.com/blog/2018-11-08-IMG_0310.PNG?imageView2/2/w/300/q/100)
 
-![](https://storage-1251325576.picbj.myqcloud.com/blog/2018-11-08-IMG_0319.PNG?imageView2/2/w/300/q/100)![](https://storage-1251325576.picbj.myqcloud.com/blog/2018-11-08-IMG_0320.PNG?imageView2/2/w/300/q/99)
-
-![](https://storage-1251325576.picbj.myqcloud.com/blog/2018-11-08-IMG_0311.PNG?imageView2/2/w/300/q/100)![](https://storage-1251325576.picbj.myqcloud.com/blog/2018-11-08-IMG_0312.PNG?imageView2/2/w/300/q/100)
-
-![](https://storage-1251325576.picbj.myqcloud.com/blog/2018-11-08-IMG_0313.PNG?imageView2/2/w/300/q/100)
+> App 截图
 
 
+<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0309.PNG" width="50%" align="left"/>
+<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0310.PNG" width="50%" align="right"/>&nbsp;
+
+<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0319.PNG" width="50%" align="left"/>
+<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0320.PNG" width="50%" align="right"/>&nbsp;
+
+<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0311.PNG" width="50%" align="left"/>
+<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0312.PNG" width="50%" align="right"/>&nbsp;
+
+<img src="https://raw.githubusercontent.com/zcoderr/Flutter_Douban/master/screenshots/IMG_0313.PNG" width="50%" align="center"/>
 
 
-
-涉及知识点目录：**
+> 涉及知识点目录
 
 ###### 1.环境安装以及 Flutter 常用命令：
 
