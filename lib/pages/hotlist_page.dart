@@ -38,7 +38,7 @@ class HotListState extends State<HotListPage> {
   Widget getListItem(int pos) {
     return new InkWell(
       onTap: () {
-        toDetailPage(_data[pos].id);
+        toDetailPage(_data[pos].id, hdImgMap[_data[pos].id]);
       },
       child: new Padding(
         padding: new EdgeInsets.only(left: 15.0, right: 15.0, bottom: 10.0),
@@ -116,12 +116,13 @@ class HotListState extends State<HotListPage> {
     );
   }
 
-  toDetailPage(String movieId) {
+  toDetailPage(String movieId, String imgUrl) {
     setState(() {
       Navigator.of(context).push(new MaterialPageRoute<Null>(
         builder: (BuildContext context) {
           return new MovieDetailPage(
             movieId: movieId,
+            hdImgUrl: imgUrl,
           );
         },
       ));
@@ -161,6 +162,7 @@ class HotListState extends State<HotListPage> {
                       ".jpg";
               print("获取到封面： " + imgUrl);
               map[movieId] = imgUrl;
+
               setState(
                 () {
                   hdImgMap = map;

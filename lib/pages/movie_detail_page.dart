@@ -7,37 +7,29 @@ import 'package:doubanmovie_flutter/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class MovieDetailPage extends StatelessWidget {
+///电影详情页
+// ignore: must_be_immutable
+class MovieDetailPage extends StatefulWidget {
+  // 电影ID
   String movieId;
+  // 电影高清海报图url
+  String hdImgUrl;
 
-  MovieDetailPage({Key key, this.movieId}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      body: _MovieDetailPageBuilder(movieId),
-    );
-  }
-}
-
-class _MovieDetailPageBuilder extends StatefulWidget {
-  String _movieId;
-
-  _MovieDetailPageBuilder(this._movieId);
+  MovieDetailPage({Key key, this.movieId, this.hdImgUrl}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return new _MovieDetailPageBuilderState(_movieId);
+    return new MovieDetailPageState(movieId, hdImgUrl);
   }
 }
 
-class _MovieDetailPageBuilderState extends State<_MovieDetailPageBuilder> {
+class MovieDetailPageState extends State<MovieDetailPage> {
   String _movieId;
   String hdImgUrl;
   MovieDetail movieDetail;
   Color _titleBarColor;
 
-  _MovieDetailPageBuilderState(this._movieId);
+  MovieDetailPageState(this._movieId, this.hdImgUrl);
 
   @override
   void initState() {
@@ -64,37 +56,56 @@ class _MovieDetailPageBuilderState extends State<_MovieDetailPageBuilder> {
   @override
   Widget build(BuildContext context) {
     if (movieDetail != null && _titleBarColor != null) {
-      return CustomScrollView(
-        slivers: <Widget>[
-          new SliverAppBar(
-            pinned: true,
-            elevation: 0.0,
-            backgroundColor: _titleBarColor,
-            actions: <Widget>[
-              new IconButton(
-                icon: new Icon(Icons.share),
-                tooltip: 'Open shopping cart',
-                onPressed: () {
-                  // handle the press
-                },
-              ),
-            ],
-            expandedHeight: 0.0,
-            centerTitle: true,
-            title: new Text(movieDetail.title),
-          ),
-          new SliverList(
-            delegate: new SliverChildListDelegate(
-              [
-                _blurHeaderSection(
-                    hdImgUrl == null ? movieDetail.images.large : hdImgUrl),
-                _BasicInfoSection(),
-                _SummarySection(),
-                getActorList(),
+      return new Scaffold(
+        body: CustomScrollView(
+          slivers: <Widget>[
+            // titleBar
+            new SliverAppBar(
+              pinned: true,
+              elevation: 0.0,
+              backgroundColor: _titleBarColor,
+              actions: <Widget>[
+                new IconButton(
+                  icon: new Icon(Icons.share),
+                  tooltip: 'Open shopping cart',
+                  onPressed: () {
+                    // handle the press
+                  },
+                ),
               ],
+              expandedHeight: 0.0,
+              centerTitle: true,
+              title: new Text(
+                movieDetail.title,
+                style: new TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
-          ),
-//          new SliverList(
+            new SliverList(
+              delegate: new SliverChildListDelegate(
+                [
+                  _blurHeaderSection(
+                      hdImgUrl == null ? movieDetail.images.large : hdImgUrl),
+                  _basicInfoSection(),
+                  _summarySection(),
+                  _actorListSection(),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    // 加载状态样式
+    return new Scaffold(
+      body: new Center(
+        child: new CircularProgressIndicator(),
+      ),
+    );
+  }
+
+//  new SliverList(
 //            delegate: new SliverChildBuilderDelegate(
 //              (BuildContext context, int index) {
 //                return getActorListItem(index);
@@ -102,13 +113,6 @@ class _MovieDetailPageBuilderState extends State<_MovieDetailPageBuilder> {
 //              childCount: movieDetail.casts.length,
 //            ),
 //          ),
-        ],
-      );
-    }
-    return new Center(
-      child: new CircularProgressIndicator(),
-    );
-  }
 
   void loadData() {
     http
@@ -143,6 +147,7 @@ class _MovieDetailPageBuilderState extends State<_MovieDetailPageBuilder> {
     );
   }
 
+  // Header 布局
   Widget _blurHeaderSection(String imgUrl) {
     return new Stack(
       children: <Widget>[
@@ -150,21 +155,21 @@ class _MovieDetailPageBuilderState extends State<_MovieDetailPageBuilder> {
           movieDetail.images.large,
           fit: BoxFit.fill,
           width: 500.0,
-          height: 400.0,
+          height: 500.0,
         ),
         new BackdropFilter(
-          filter: new ui.ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+          filter: new ui.ImageFilter.blur(sigmaX: 7.0, sigmaY: 7.0),
           child: new Container(
-            padding: new EdgeInsets.only(top: 50.0),
+            padding: new EdgeInsets.only(top: 0.0),
             width: 500.0,
-            height: 400.0,
+            height: 500.0,
             decoration:
                 new BoxDecoration(color: Colors.grey.shade900.withOpacity(0.0)),
             child: new Center(
               child: new Image.network(
                 imgUrl,
-                width: 186.2,
-                height: 300.0,
+                width: 270,
+                height: 400,
                 fit: BoxFit.cover,
               ),
             ),
@@ -174,7 +179,8 @@ class _MovieDetailPageBuilderState extends State<_MovieDetailPageBuilder> {
     );
   }
 
-  Widget _BasicInfoSection() {
+  // 基本信息区域
+  Widget _basicInfoSection() {
     return new Padding(
       padding: new EdgeInsets.only(left: 15.0, right: 15.0, top: 5.0),
       child: new Row(
@@ -271,7 +277,8 @@ class _MovieDetailPageBuilderState extends State<_MovieDetailPageBuilder> {
     return sb.toString();
   }
 
-  getActorList() {
+  //演员列表区域
+  _actorListSection() {
     return new SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: new Padding(
@@ -349,7 +356,8 @@ class _MovieDetailPageBuilderState extends State<_MovieDetailPageBuilder> {
     );
   }
 
-  Widget _SummarySection() {
+  // 电影简介区域
+  Widget _summarySection() {
     return new Padding(
       padding: new EdgeInsets.only(left: 15.0, right: 15.0, top: 10.0),
       child: Column(
