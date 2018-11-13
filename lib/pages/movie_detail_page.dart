@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:math' as Math;
 import 'dart:ui' as ui;
 
+import 'package:doubanmovie_flutter/CustomView.dart';
 import 'package:doubanmovie_flutter/model//MovieDetail.dart';
 import 'package:doubanmovie_flutter/palette.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 class MovieDetailPage extends StatefulWidget {
   // 电影ID
   String movieId;
+
   // 电影高清海报图url
   String hdImgUrl;
 
@@ -38,6 +39,7 @@ class MovieDetailPageState extends State<MovieDetailPage> {
   }
 
   getImageAndPalette() async {
+    //通过Flutter插件获取图片主色调
     Palette palette =
         await PaletteLib.getPaletteWithUrl(movieDetail.images.large);
     //print(palette.darkVibrant.color.toString());
@@ -115,6 +117,7 @@ class MovieDetailPageState extends State<MovieDetailPage> {
 //          ),
 
   void loadData() {
+    //获取电影详情数据
     http
         .get('https://api.douban.com/v2/movie/subject/' + _movieId)
         .then((http.Response response) {
@@ -151,12 +154,14 @@ class MovieDetailPageState extends State<MovieDetailPage> {
   Widget _blurHeaderSection(String imgUrl) {
     return new Stack(
       children: <Widget>[
+        // 底部背景图
         new Image.network(
           movieDetail.images.large,
           fit: BoxFit.fill,
           width: 500.0,
           height: 500.0,
         ),
+        // 毛玻璃效果浮层
         new BackdropFilter(
           filter: new ui.ImageFilter.blur(sigmaX: 7.0, sigmaY: 7.0),
           child: new Container(
@@ -165,6 +170,7 @@ class MovieDetailPageState extends State<MovieDetailPage> {
             height: 500.0,
             decoration:
                 new BoxDecoration(color: Colors.grey.shade900.withOpacity(0.0)),
+            // 居中的海报图
             child: new Center(
               child: new Image.network(
                 imgUrl,
@@ -185,12 +191,15 @@ class MovieDetailPageState extends State<MovieDetailPage> {
       padding: new EdgeInsets.only(left: 15.0, right: 15.0, top: 5.0),
       child: new Row(
         children: <Widget>[
+          // weight=1
           new Expanded(
             child: new Align(
               alignment: new FractionalOffset(0.0, 0.0),
               child: new Column(
+                // 左对齐
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  // 电影标题
                   new Text(
                     movieDetail.title,
                     style: new TextStyle(
@@ -198,6 +207,7 @@ class MovieDetailPageState extends State<MovieDetailPage> {
                         letterSpacing: 1.5,
                         fontWeight: FontWeight.bold),
                   ),
+                  // 电影标签
                   new Padding(
                     padding: new EdgeInsets.only(top: 5.0, bottom: 2.0),
                     child: new Text(
@@ -247,11 +257,9 @@ class MovieDetailPageState extends State<MovieDetailPage> {
                               fontWeight: FontWeight.bold),
                         ),
                       ),
-                      new CustomPaint(
-                        size: new Size(100.0, 20.0),
-                        painter: new ScorePainter(
-                          movieDetail.rating.average,
-                        ),
+                      new ScoreView(
+                        new Size(100.0, 20.0),
+                        movieDetail.rating.average,
                       ),
                       new Text(
                         movieDetail.ratings_count.toString() + "人",
@@ -298,6 +306,7 @@ class MovieDetailPageState extends State<MovieDetailPage> {
         ));
   }
 
+  // 演员列表
   buildActorItems() {
     List<Widget> actorItems = [];
     actorItems.add(getDirectorsListItem());
@@ -307,6 +316,7 @@ class MovieDetailPageState extends State<MovieDetailPage> {
     return actorItems;
   }
 
+  // 演员列表Item
   Widget getActorListItem(int pos) {
     return new Column(
       children: <Widget>[
@@ -326,6 +336,7 @@ class MovieDetailPageState extends State<MovieDetailPage> {
     );
   }
 
+  // 导演Item
   Widget getDirectorsListItem() {
     return new Column(
       children: <Widget>[
@@ -380,94 +391,6 @@ class MovieDetailPageState extends State<MovieDetailPage> {
         ],
       ),
     );
-  }
-}
-
-class ScorePainter extends CustomPainter {
-  double _score;
-
-  ScorePainter(this._score);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    double padding = 10.0; //左右两边间距
-    double spacing = 2.0; // 星星之间间距
-
-    double outR = (size.width - 2 * padding - 4 * spacing) / 2 / 5;
-    double inR = outR * sin(18) / sin(180 - 36 - 18);
-
-    Paint paint = new Paint();
-    paint.isAntiAlias = true;
-    paint.color = Colors.orange;
-    paint.strokeWidth = 1.0;
-
-    canvas.translate(padding + outR, outR);
-    //Path path = getCompletePath(outR, inR);
-    paint.style = PaintingStyle.fill;
-//    Path path = getStarPath(outR, inR, 0.0, 0.0, 0.0);
-//
-//    for (int i = 0; i < 5; i++) {
-//      canvas.drawPath(path, paint);
-//      canvas.translate(spacing + outR * 2, 0.0);
-//    }
-
-    Path path;
-    for (int i = 0; i < 5; i++) {
-      if (_score > 2.0) {
-        // 完整的星星
-        paint.color = Colors.orange;
-        path = getStarPath(outR, inR, 0.0, 0.0, 0.0);
-        canvas.drawPath(path, paint);
-      } else if (_score > 0.0) {
-        // 不完整的星星
-        paint.color = Colors.grey;
-        path = getStarPath(outR, inR, 0.0, 0.0, 0.0);
-        canvas.drawPath(path, paint);
-
-        paint.blendMode = BlendMode.overlay;
-        paint.color = Colors.orange;
-        Rect rect = new Rect.fromLTWH(-outR, -outR, outR * _score, 2 * outR);
-        canvas.drawRect(rect, paint);
-
-        paint.blendMode = BlendMode.src;
-      } else {
-        // 灰色星星
-        paint.color = Colors.grey;
-        path = getStarPath(outR, inR, 0.0, 0.0, 0.0);
-        canvas.drawPath(path, paint);
-      }
-      canvas.translate(spacing + outR * 2, 0.0);
-      _score -= 2.0;
-    }
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
-
-  getStarPath(double R, double r, double x, double y, double rot) {
-    Path path = new Path();
-
-    path.moveTo(Math.cos((54 + 72 * -1 - rot) / 180 * Math.pi) * r + x,
-        -Math.sin((54 + 72 * -1 - rot) / 180 * Math.pi) * r + y);
-
-    for (var i = 0; i < 5; i++) {
-      path.lineTo(Math.cos((18 + 72 * i - rot) / 180 * Math.pi) * R + x,
-          -Math.sin((18 + 72 * i - rot) / 180 * Math.pi) * R + y);
-      path.lineTo(Math.cos((54 + 72 * i - rot) / 180 * Math.pi) * r + x,
-          -Math.sin((54 + 72 * i - rot) / 180 * Math.pi) * r + y);
-    }
-    path.close();
-    return path;
-  }
-
-  double cos(int num) {
-    return Math.cos(num * Math.pi / 180);
-  }
-
-  double sin(int num) {
-    return Math.sin(num * Math.pi / 180);
   }
 }
 
