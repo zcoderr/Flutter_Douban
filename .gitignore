@@ -7,3 +7,9 @@
 build/
 
 .flutter-plugins
+.gitattributes
+.metadata
+
+doubanmovie_flutter.iml
+doubanmovie_flutter_android.iml
+pubspec.lock
