@@ -1,8 +1,8 @@
 import 'dart:convert';
 
+import 'package:doubanmovie_flutter/CustomView.dart';
 import 'package:doubanmovie_flutter/model/MovieIntro.dart';
 import 'package:doubanmovie_flutter/model/MovieIntroList.dart';
-import 'package:doubanmovie_flutter/utils/StarView.dart';
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' show parse;
@@ -181,8 +181,8 @@ class ExplorePageState extends State<ExplorePage> {
                       color: Colors.black,
                     ),
                   ),
-                  new StarView(
-                      80.0, 20.0, double.parse(_newMovieList[index]['score'])),
+                  new ScoreView(0.0, 2.0, new Size(80.0, 20.0),
+                      double.parse(_newMovieList[index]['score'])),
                   new Text(
                     _newMovieList[index]['score'] + '分',
                     style: new TextStyle(
@@ -308,6 +308,7 @@ class ExplorePageState extends State<ExplorePage> {
     });
   }
 
+  //爬取新片榜
   void loadNewRankData() {
     List<Map<String, String>> list = [];
     http.get('https://movie.douban.com/chart').then((http.Response response) {
@@ -355,6 +356,7 @@ class ExplorePageState extends State<ExplorePage> {
     });
   }
 
+  // 爬取周榜
   void getWeeklyData() {
     List<Map<String, String>> list = [];
     http.get('https://movie.douban.com/chart').then((http.Response response) {
@@ -394,6 +396,7 @@ class ExplorePageState extends State<ExplorePage> {
     });
   }
 
+  //跳转到详情页
   toDetailPage(String movieId) {
     setState(() {
       Navigator.of(context).push(new MaterialPageRoute<Null>(

@@ -130,26 +130,6 @@ class MovieDetailPageState extends State<MovieDetailPage> {
     });
   }
 
-  Widget _HeaderSection() {
-    return new SizedBox(
-      height: 270.0,
-      child: DecoratedBox(
-        decoration: new BoxDecoration(color: Colors.indigo),
-        child: new Padding(
-          padding: new EdgeInsets.only(top: 0.0),
-          child: new Center(
-            child: new Image.network(
-              movieDetail.images.large,
-              width: 144.0,
-              height: 232.0,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   // Header 布局
   Widget _blurHeaderSection(String imgUrl) {
     return new Stack(
@@ -258,6 +238,8 @@ class MovieDetailPageState extends State<MovieDetailPage> {
                         ),
                       ),
                       new ScoreView(
+                        10.0,
+                        2.0,
                         new Size(100.0, 20.0),
                         movieDetail.rating.average,
                       ),

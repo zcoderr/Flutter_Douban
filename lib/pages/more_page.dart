@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
+/// 更多页面
 class MorePage extends StatefulWidget {
   @override
   State createState() {
@@ -13,16 +14,16 @@ class _MorePageState extends State<MorePage> {
   Widget build(BuildContext context) {
     return new ListView(
       children: <Widget>[
-        getMorePageTitle(),
-        getHeaderSection(),
-        getButtonSection(),
-        getQqGroupSection(),
-        getThanksForApi(),
+        buildMorePageTitle(),
+        buildHeaderSection(),
+        buildButtonSection(),
+        buildQqGroupSection(),
+        buildThanksForApi(),
       ],
     );
   }
 
-  Widget getHeaderSection() {
+  Widget buildHeaderSection() {
     return new Container(
       margin: new EdgeInsets.only(left: 15.0, right: 15.0),
       decoration: new BoxDecoration(
@@ -68,7 +69,7 @@ class _MorePageState extends State<MorePage> {
     );
   }
 
-  Widget getButtonSection() {
+  Widget buildButtonSection() {
     return new Container(
         height: 120.0,
         margin: new EdgeInsets.only(top: 5.0),
@@ -182,7 +183,7 @@ class _MorePageState extends State<MorePage> {
         ));
   }
 
-  Widget getQqGroupSection() {
+  Widget buildQqGroupSection() {
     return new InkWell(
       onTap: () {
         onQQGroupClick();
@@ -212,7 +213,7 @@ class _MorePageState extends State<MorePage> {
     );
   }
 
-  Widget getThanksForApi() {
+  Widget buildThanksForApi() {
     return new Container(
       padding:
           new EdgeInsets.only(left: 15.0, right: 15.0, top: 15.0, bottom: 15.0),
@@ -237,7 +238,7 @@ class _MorePageState extends State<MorePage> {
     );
   }
 
-  Widget getMorePageTitle() {
+  Widget buildMorePageTitle() {
     return new Container(
       child: new Text(
         '更多',

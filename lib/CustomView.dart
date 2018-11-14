@@ -5,18 +5,16 @@ import 'package:flutter/material.dart';
 class ScoreView extends StatelessWidget {
   double score;
   Size size;
-  double width;
-  double height;
+  double padding;
+  double spacing;
 
-  ScoreView(this.size, this.score);
+  ScoreView(this.padding, this.spacing, this.size, this.score);
 
   @override
   Widget build(BuildContext context) {
     return new CustomPaint(
       size: size,
-      painter: new ScorePainter(
-        score,
-      ),
+      painter: new ScorePainter(score, padding, spacing),
     );
   }
 }
@@ -28,8 +26,10 @@ class ScorePainter extends CustomPainter {
   Paint _backgroundPaint;
   Paint _foregroundPaint;
 
-  ScorePainter(num score) {
+  ScorePainter(num score, double padding, num spacing) {
     this._score = score;
+    this.padding = padding;
+    this.spacing = spacing;
     init();
   }
 
