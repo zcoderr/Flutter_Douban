@@ -18,10 +18,10 @@ open class PaletteSwatch {
 	private let hex: Int64
 
 	/** This swatch’s color */
-	open let color: UIColor
+	public let color: UIColor
 
 	/** The number of pixels represented by this swatch */
-	open let population: Int64
+	public let population: Int64
 
 	private var generatedTextColors: Bool = false
 	private var _titleTextColor: UIColor?
