@@ -5,10 +5,10 @@ import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart' as http;
 
 void main() {
-  new CrawUtil().getWeeklyData();
+  new DataSource().getHotFilmCritics();
 }
 
-class CrawUtil {
+class DataSource {
   void a() {
     http
         .get('https://movie.douban.com/subject/26804147/photos?type=R')
@@ -120,7 +120,7 @@ class CrawUtil {
     });
   }
 
-  void getWeeklyData() {
+  static void getWeeklyData() {
     List<Map<String, String>> list = [];
     http.get('https://movie.douban.com/chart').then((http.Response response) {
       var document = parse(response.body.toString());
@@ -156,6 +156,69 @@ class CrawUtil {
         list.add(movie);
         print('-------------------------------------------');
       }
+    });
+  }
+
+  List<Map<String, String>> getHotFilmCritics() {
+    List<Map<String, String>> hotFilmCritics = [];
+    http
+        .get('https://movie.douban.com/subject/3878007/')
+        .then((http.Response response) {
+      var document = parse(response.body.toString());
+
+      List<Element> commentList = document
+          .getElementById('hot-comments')
+          .getElementsByClassName('comment-item');
+
+      for (var comment in commentList) {
+        Map<String, String> criticsItem = new Map();
+
+        print('---------------');
+
+        String authorName = comment
+            .getElementsByClassName('comment-info')[0]
+            .getElementsByTagName('a')[0]
+            .text;
+        criticsItem['author'] = authorName;
+        print('作者：' + authorName);
+
+        String rate =
+            comment.getElementsByClassName('rating')[0].attributes['title'];
+        criticsItem['rate'] = rate;
+        print('评分：' + rate);
+
+        String starNum =
+            comment.getElementsByClassName('rating')[0].attributes['class'];
+        criticsItem['stars'] = starNum;
+        print('星星：' + starNum.substring(0, 9));
+
+        String votes = comment.getElementsByClassName('votes')[0].text;
+        criticsItem['votes'] = votes;
+        print('获赞：' + votes);
+
+        String commentTime =
+            comment.getElementsByClassName('comment-time ')[0].text.trim();
+        criticsItem['commentTime'] = commentTime;
+        print('时间:' + commentTime);
+
+        String commentShort = comment.getElementsByClassName('short')[0].text;
+        criticsItem['commentShort'] = commentShort;
+        print('评论:' + commentShort);
+
+        if (comment.getElementsByClassName('hide-item').length > 0) {
+          String commentFull =
+              comment.getElementsByClassName('hide-item')[0].text;
+          criticsItem['commentFull'] = commentFull;
+          print('全长评论：' + commentFull);
+        }
+        hotFilmCritics.add(criticsItem);
+      }
+
+      print('===============');
+      for (var i in hotFilmCritics) {
+        print(i);
+      }
+      return hotFilmCritics;
     });
   }
 }

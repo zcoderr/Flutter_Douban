@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 
 import 'package:doubanmovie_flutter/CustomView.dart';
 import 'package:doubanmovie_flutter/model//MovieDetail.dart';
+import 'package:doubanmovie_flutter/net/DateSource.dart';
 import 'package:doubanmovie_flutter/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -36,6 +37,7 @@ class MovieDetailPageState extends State<MovieDetailPage> {
   void initState() {
     super.initState();
     loadData();
+    DataSource.getWeeklyData();
   }
 
   getImageAndPalette() async {

@@ -254,7 +254,7 @@ class _MorePageState extends State<MorePage> {
       Navigator.of(context).push(new MaterialPageRoute<Null>(
         builder: (BuildContext context) {
           return new WebviewScaffold(
-            url: "https://github.com/2acharyW/Flutter_Douban",
+            url: "https://github.com/zcoderr/Flutter_Douban",
             appBar: new AppBar(
               backgroundColor: Colors.lightBlueAccent,
               title: new Text("Flutter版豆瓣电影"),
