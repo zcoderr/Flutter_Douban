@@ -2,8 +2,6 @@
 
 [:blue_book:文档入口](https://github.com/zcoderr/Flutter_Douban/blob/master/doc/TOC.md)
 
-
-
 > 下载方式：
 
 **Android：**
@@ -15,9 +13,19 @@
 
 <img src="https://raw.githubusercontent.com/zcoderr/Resource/master/img/doubanmovie_apk.png" width="20%"/>&nbsp;
 
-
 **iOS：**
 暂无
+
+
+
+#### To-Do List:
+
+- [ ] 添加影人详情页面
+- [ ] 在电影详情页面添加热门评论
+- [ ] 电影详情页里添加电影海报模块
+- [ ] 添加评论详情页面
+
+
 
 > App 截图
 
